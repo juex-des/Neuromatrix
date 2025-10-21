@@ -1,0 +1,17 @@
+[2025-05-11 11:10:49] Error: Expecting value: line 1 column 1 (char 0)
+[2025-05-17 22:06:35] Error: Expecting value: line 41 column 7 (char 880)
+[2025-05-17 22:23:07] Error: Expecting value: line 41 column 7 (char 880)
+[2025-05-20 06:23:44] Error: Expecting value: line 41 column 7 (char 880)
+[2025-05-20 06:25:21] Error: Expecting value: line 41 column 7 (char 880)
+[2025-05-20 06:34:56] Error: Expecting value: line 41 column 7 (char 880)
+[2025-05-20 06:35:57] Error: Expecting value: line 41 column 7 (char 880)
+[2025-05-20 06:36:20] Error: Expecting value: line 41 column 7 (char 880)
+[2025-05-20 06:37:04] Error: Expecting value: line 41 column 7 (char 880)
+[2025-08-13 15:53:01] Error: Object of type Profile is not JSON serializable
+[2025-08-13 15:54:02] Error: Expecting value: line 1 column 1 (char 0)
+[2025-08-13 15:54:35] Error: Expecting value: line 1 column 1 (char 0)
+[2025-08-13 18:36:08] Error: Expecting value: line 1 column 1 (char 0)
+[2025-08-13 18:36:26] Error: Expecting value: line 1 column 1 (char 0)
+[2025-10-20 18:48:10] Error: 'cp950' codec can't decode byte 0xe2 in position 4439: illegal multibyte sequence
+[2025-10-20 18:48:59] Error: 'cp950' codec can't decode byte 0xe2 in position 4439: illegal multibyte sequence
+[2025-10-20 18:50:47] Error: 'cp950' codec can't decode byte 0xe2 in position 4439: illegal multibyte sequence
