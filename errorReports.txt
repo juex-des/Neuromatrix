@@ -15,3 +15,8 @@
 [2025-10-20 18:48:10] Error: 'cp950' codec can't decode byte 0xe2 in position 4439: illegal multibyte sequence
 [2025-10-20 18:48:59] Error: 'cp950' codec can't decode byte 0xe2 in position 4439: illegal multibyte sequence
 [2025-10-20 18:50:47] Error: 'cp950' codec can't decode byte 0xe2 in position 4439: illegal multibyte sequence
+[2025-10-21 21:49:28] Error: 'cp950' codec can't decode byte 0xe2 in position 1077: illegal multibyte sequence
+[2025-10-21 21:58:02] Error: 'cp950' codec can't decode byte 0xe2 in position 1918: illegal multibyte sequence
+[2025-10-21 21:58:20] Error: Expecting value: line 1 column 1 (char 0)
+[2025-10-21 21:59:49] Error: 'cp950' codec can't decode byte 0xe2 in position 1027: illegal multibyte sequence
+[2025-10-21 22:00:06] Error: 'cp950' codec can't decode byte 0xe2 in position 1027: illegal multibyte sequence

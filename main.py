@@ -69,12 +69,19 @@ class Profile:
     else:
       self.abilities[key] = value
 
-
 # loading file
-PROFILE_FILE = "userdata/profile.json"
-GOAL_FILE = "userdata/goal.json"
-QUEST_FILE = "userdata/quest.json"
-QUIZ_FILE = "userdata/quiz.json"
+
+testing_mode = False
+if testing_mode:
+  PROFILE_FILE = "userdata_forTesting/profile.json"
+  GOAL_FILE = "userdata_forTesting/goal.json"
+  QUEST_FILE = "userdata_forTesting/quest.json"
+  QUIZ_FILE = "userdata_forTesting/quiz.json"
+else:
+  PROFILE_FILE = "userdata/profile.json"
+  GOAL_FILE = "userdata/goal.json"
+  QUEST_FILE = "userdata/quest.json"
+  QUIZ_FILE = "userdata/quiz.json"
 
 profile = Profile(load_file(PROFILE_FILE))
 goal = load_file(GOAL_FILE)
@@ -118,8 +125,13 @@ def hp_bar(bar_width=10):
 
 def display(mode=0):
   time.sleep(0.25)
-  os.system('cls')
-  print('\033[1;36m  NEUROMATRIX    \033[90mv1.0.2\033[0m')
+
+  if os.name == 'nt':
+    os.system('cls')
+  elif os.name == 'posix':
+    os.system('clear')
+
+  print('\033[1;36m  NEUROMATRIX    \033[90mv1.0.3\033[0m')
   if mode == 0:
     if profile.today_learning_time < 3600:
       elapsedTimeColor = "\033[1;33m"
@@ -165,7 +177,7 @@ if profile.username == 'undefined':
   typingPrint(f'Congrats {profile.username}! You\'ve now set up your profile.')
   typingPrint('You can now wander around to discover the world of Neuromatrix.')
   typingPrint('When you see a menu like this ...')
-  print('[1] Profile\n[2] Quiz\n[3] Goal Tracker\n[4] Shop\n[5] Quests\n[6] Settings\n[0] Exit')
+  print('[1] Profile\n[2] Quiz\n[3] Goal Tracker\n[4] Shop\n[5] Settings\n[0] Exit')
   typingPrint('... you can select an option by typing the number and pressing enter.')
   typingPrint('For instance, if you want to check your profile, type 1 and press enter.')
   typingPrint('If you want to exit, type 0 and press enter.')
@@ -186,7 +198,9 @@ if time.strftime("%Y-%m-%d") != profile.last_login:
   else:
     profile.streak = 1
     print(f'Welcome back!')
-    print(f'You\'ve broken your streak unfortunately, as your previous login is at {profile.last_login}')
+    if profile.date_registered != time.strftime("%Y-%m-%d"):
+      print(f'You\'ve broken your streak unfortunately, as your previous login is at {profile.last_login}')
+  
   # daily reward
   print(f'You\'ve received \033[1m7,500 (+{profile.streak*750} streak bonus)\033[0m coins as your daily reward!')
   profile.addCoin(7500 + (profile.streak * 750))
@@ -416,7 +430,13 @@ while status != -1:
           input("\033[3mPress enter to continue... \033[0m")
         
         # Report of incorrect answers
-        print("\n\033[1mREVIEW OF INCORRECT ANSWERS\033[0m")
+        incorrect_exist = False
+        for i in range(total_questions):
+          if selected_quiz["questions"][i]["user_choice"] != selected_quiz["questions"][i]["answer"]:
+            incorrect_exist = True
+
+        if incorrect_exist:
+          print("\n\033[1mREVIEW OF INCORRECT ANSWERS\033[0m")
         for i in range(total_questions):
           q = selected_quiz["questions"][i]
           user_answer = q["user_choice"]
@@ -427,7 +447,9 @@ while status != -1:
             else:
               print(f"❌ Your answer: (Invalid Answer)")
             print(f"✅ Correct answer: {q['options'][q['answer']]}")
-        input('\033[3mPress enter to continue...\033[0m')
+        
+        if incorrect_exist:
+          input('\033[3mPress enter to continue...\033[0m')
 
         # final reward
         accuracy = correct / total_questions
@@ -713,9 +735,9 @@ while status != -1:
             print("You will receive double your deposit if you complete the goal.")
             while True:
               deposit = int(input(">>> ").strip())
-              if deposit > 0 and deposit <= 25000:
+              if deposit > 0 and deposit <= 25000 and deposit <= profile.coin:
                 break
-              print("You must enter a deposit between 1 and 25,000 coins.")
+              print("You must enter a deposit between 1 and 25,000 coins, and have enough coins to create the goal.")
               input("\033[3mPress anything to continue... \033[0m")
           except:
             print("Error: Invalid input. Please try again.")
