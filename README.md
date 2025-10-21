@@ -3,5 +3,4 @@ Information & Communication Technologies
 School-Based Assessment   
 First full version released 14 August 2025  
 
-*Please refer to the link below for instruction in downloading the source files*  
-https://docs.github.com/en/get-started/start-your-journey/downloading-files-from-github
+*Please refer to this [link](https://docs.github.com/en/get-started/start-your-journey/downloading-files-from-github#downloading-a-repositorys-files) for instructions on how to download the source files*  
