@@ -1,0 +1,25 @@
+{
+  "username": "undefined",
+  "date_registered": "undefined",
+  "last_login": "undefined",
+  "last_coinflip": "undefined",
+  "tier_accolade": "None",
+  "today_learning_time": 0,
+  "total_learning_time": 0,
+  "hp": 100,
+  "max_hp": 100,
+  "streak": 0,
+  "quests_claimed": false,
+  "coin": 0,
+  "boss_unlocked": [
+    "Tiffany"
+  ],
+  "settings_quote": true,
+  "abilities": {
+  "fatal_immunity": 0,
+  "reward_boost": 0,
+  "streak_bonus": 0,
+  "heal_on_correct": 0,
+  "heal_on_win": 0
+  }
+}
