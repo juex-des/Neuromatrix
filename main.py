@@ -939,7 +939,7 @@ while status != -1:
   elif status == '4':
     display(4)
     print('[1] Coinflip')
-    print('[2] Accolades')
+    print('[2] Tier Upgrading')
     print('[3] Potions')
     print('[4] Abilities')
     print('[5] Bosses')

@@ -17,3 +17,10 @@ First fully released version
 - Removed the ‘Quest’ module from new user introduction
 ### UI improvement
 - Omitted display of 'Review of incorrect answers' if users got all questions correct as followup of UAT
+
+## [1.0.4] - 2025-10-23
+### Patches
+- Changed the option description from ‘Accolades’ to ‘Tier Upgrade’ to increase coherence of term usage across the program
+
+### UX improvement
+- Added a new default quiz in order to demonstrate and allow the user to experience the quiz game without the hustle of creating a new quiz on their own.

@@ -8,11 +8,9 @@ Required extensions: Python, Pylance
 
 *Please refer to this [link](https://docs.github.com/en/get-started/start-your-journey/downloading-files-from-github#downloading-a-repositorys-files) for instructions on how to download the source files*  
 
-## [1.0.3] - 2025-10-21
+## [1.0.4] - 2025-10-23
 ### Patches
-- Patched the issue that the screen clear function does not work on mac OS
-- Patched the issue that users can create a goal with a deposit exceeding the amount of coins they own, resulting in negative coins
-- Patched display of a false broken streak: when a user first registered, they could not ‘break’ a streak
-- Removed the ‘Quest’ module from new user introduction
-### UI improvement
-- Omitted display of 'Review of incorrect answers' if users got all questions correct as followup of UAT
+- Changed the option description from ‘Accolades’ to ‘Tier Upgrade’ to increase coherence of term usage across the program
+
+### UX improvement
+- Added a new default quiz in order to demonstrate and allow the user to experience the quiz game without the hustle of creating a new quiz on their own.
