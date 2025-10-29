@@ -131,7 +131,7 @@ def display(mode=0):
   elif os.name == 'posix':
     os.system('clear')
 
-  print('\033[1;36m  NEUROMATRIX    \033[90mv1.0.3\033[0m')
+  print('\033[1;36m  NEUROMATRIX    \033[90mv1.1.0\033[0m')
   if mode == 0:
     if profile.today_learning_time < 3600:
       elapsedTimeColor = "\033[1;33m"
@@ -143,7 +143,7 @@ def display(mode=0):
     hoursT = int(profile.today_learning_time // 3600)
     minutesT = int((profile.today_learning_time % 3600) // 60)
     secondsT = int(profile.today_learning_time % 60)
-    print(f'🕒 Time elapsed: {elapsed_time("d")} ({elapsedTimeColor}{hoursT:02}h {minutesT:02}m {secondsT:02}s\033[0m for today)')
+    print(f'🕒 Time elapsed: {elapsed_time("d")} ({elapsedTimeColor}{hoursT:02}h {minutesT:02}m {secondsT:02}s\033[0m for this session)')
     print(f'💰 Coins:        \033[1m{profile.coin}\033[0m')
     print(f'❤️   HP:          {hp_bar()}')
 
@@ -210,6 +210,7 @@ if time.strftime("%Y-%m-%d") != profile.last_login:
 
   profile.last_login = time.strftime("%Y-%m-%d")
   profile.save()
+  print("\033[3mEnter full mode for better experience by clicking \033[1m'Maximize Panel Size' \033[0m")
   input("\n\033[3mPress anything to continue... \033[0m")
 
 while status != -1:
@@ -236,7 +237,7 @@ while status != -1:
     print(f'⏳ Total Learning Time\t\t\033[1m{hours:02}h {minutes:02}m {seconds:02}s')
     print()
     print(f'🔰 Tier\t\t\t\t\033[1m{profile.tier_accolade}\033[0m')
-    print(f'🔥 Streak\t\t\t\033[1m{profile.streak}\033[0m')
+    print(f'🔥 Daily Streak\t\t\t\033[1m{profile.streak}\033[0m')
     print(f'💰 Coins\t\t\t\033[1m{profile.coin}\033[0m')
     print(f'⚔️  Bosses Unlocked\t\t \033[1m{len(profile.boss_unlocked)}\033[0m')
     print('\t\t\t\t(', end='')
@@ -272,8 +273,8 @@ while status != -1:
       if not active_quizzes:
         print("No active quizzes found.")
       else:
-        name_width = 26
-        cat_width  = 16
+        name_width = 45
+        cat_width  = 25
 
         print("\033[1mActive quizzes\033[0m")
         header = f"{'id':>3}  {'name':<{name_width}} {'category':<{cat_width}} {'questions':>9}  {'attempts':>8}  {'last_reviewed'}"
@@ -305,7 +306,7 @@ while status != -1:
       print('[1] \033[1mSTART\033[0m a quiz')
       print('[2] \033[1mCREATE\033[0m a quiz')
       print('[3] \033[1mARCHIVE\033[0m a quiz')
-      print('[4] \033[1mVIEW\033[0m archived quizzes')
+      print('[4] \033[1mRESTORE\033[0m archived quizzes')
       print('[0] Return')
       option = input(">>> ").strip()
 
@@ -323,7 +324,7 @@ while status != -1:
           break
 
         if profile.hp <= 0:
-          print("You need at least 1 HP to start a quiz.")
+          print("You need at least 1 HP to start a quiz. Go to Shop > Potions to buy one.")
           input("\033[3mPress anything to continue... \033[0m")
           break
         
@@ -390,6 +391,9 @@ while status != -1:
         max_streak = 0
         total_questions = len(selected_quiz["questions"])
 
+        for q in selected_quiz["questions"]:
+          q["user_choice"] = -1
+
         for i in range(total_questions):
           q = selected_quiz["questions"][i]
           display()
@@ -422,10 +426,10 @@ while status != -1:
             streak = 0
             damage = random.randint(attack_min, attack_max)
             profile.hp -= damage
-            print(f"\033[31mWrong! You took {damage} damage.\033[0m")
+            print(f"\033[31mWrong! The correct answer is: {q['options'][q['answer']]}\nYou took {damage} damage.\033[0m")
             if profile.hp <= 0:
               print("\033[1m💀 Oops... You died! Quiz ended.\033[0m")
-              time.sleep(2)
+              time.sleep(0.5)
               break
           input("\033[3mPress enter to continue... \033[0m")
         
@@ -437,23 +441,21 @@ while status != -1:
 
         if incorrect_exist:
           print("\n\033[1mREVIEW OF INCORRECT ANSWERS\033[0m")
-        for i in range(total_questions):
-          q = selected_quiz["questions"][i]
-          user_answer = q["user_choice"]
-          if user_answer != q["answer"]:
-            print(f"\n📋 Question {i+1}: {q['question']}")
-            if 0 <= user_answer < len(q['options']):
-              print(f"❌ Your answer: {q['options'][user_answer]}")
-            else:
-              print(f"❌ Your answer: (Invalid Answer)")
-            print(f"✅ Correct answer: {q['options'][q['answer']]}")
-        
-        if incorrect_exist:
+          for i in range(total_questions):
+            q = selected_quiz["questions"][i]
+            user_answer = q["user_choice"]
+            if user_answer != q["answer"]:
+              print(f"\n📋 Question {i+1}: {q['question']}")
+              if 0 <= user_answer < len(q['options']):
+                print(f"❌ Your answer: {q['options'][user_answer]}")
+              else:
+                print(f"❌ Your answer: (Invalid Answer)")
+              print(f"✅ Correct answer: {q['options'][q['answer']]}")
           input('\033[3mPress enter to continue...\033[0m')
 
         # final reward
         accuracy = correct / total_questions
-        reward = int(accuracy * value * (1 + profile.abilities["reward_boost"] / 100))
+        reward = int(accuracy * value * (1 + profile.abilities["reward_boost"] / 100) * (1 / (selected_quiz["attempts"] + 1)))
 
         bonus = int(reward * (max_streak * profile.abilities["streak_bonus"] / 100))
 
@@ -630,8 +632,33 @@ while status != -1:
             else:
               cat_disp = category[:cat_width-1] + '…'
             print(f"{qid:>3}  {name_disp:<{name_width}} {cat_disp:<{cat_width}} {num_q:>9}  {attempts:>8}  {last_rev}")
+
+            try:
+              sel = int(input("\nEnter the quiz ID to restore >>> ").strip())
+            except:
+              print("Invalid input.")
+              input("\033[3mPress anything to continue... \033[0m")
+              continue
+
+            selected = False
+            for q in archived_quizzes:
+              if q["id"] == sel:
+                selected = q
+                break
+
+            if not selected:
+              print("Invalid quiz ID.")
+              input("\033[3mPress anything to continue... \033[0m")
+              continue
+
+            selected["archived"] = False
+            save_file(QUIZ_FILE, quiz)
+
+            print(f"Quiz \033[1m{selected['name']}\033[0m restored.")
+
         print()
-        input('\033[3mPress anything to continue... \033[0m')
+
+        input("\033[3mPress anything to continue... \033[0m")
 
       elif option == '0':
         break
@@ -675,21 +702,38 @@ while status != -1:
             print(f'⤷  Last Claimed\t\t{last_claimed} (claim {claim_status})')
             print()
       
-      def goalTrackerIntro():
-        typingPrint('A goal tracker is a way to set your goals and track your progress towards them.')
-        print()
-        typingPrint('You may deposit coins, and you can set the amount of checkpoints.')
-        typingPrint('You can have a minimum of 1 checkpoint, with the maximum of 4 checkpoints.')
-        print()
-        typingPrint('After completing the checkpoints, you may get a sum of coins.')
-        typingPrint('For every checkpoint you complete, you can claim a portion of the coins.')
-        typingPrint('Completing the entire goal will be taken as completing two checkpoints.')
-        typingPrint('The total amount of coins you can get is double the amount you deposited.')
-        print()
-        typingPrint('You may have at most 3 concurrent goals, with each having a maximum of 25,000 coins deposit.')
-        typingPrint('If you want to end a goal early, you will be returned half of your deposit,')
-        typingPrint('or the amount of claimed coins, whichever is higher.')
-        input("\033[3mPress enter to continue ...\033[0m\n>>> ")
+      def goalTrackerIntro(mode='p'):
+        if mode == 'p':
+          typingPrint('A goal tracker is a way to set your goals (not necessarily in this game) and track your progress towards them.')
+          print()
+          typingPrint('You may deposit coins, and you can set the amount of checkpoints.')
+          typingPrint('You can have a minimum of 1 checkpoint, with the maximum of 4 checkpoints.')
+          print()
+          typingPrint('After completing the checkpoints, you may get a sum of coins.')
+          typingPrint('For every checkpoint you complete, you can claim a portion of the coins.')
+          typingPrint('Completing the entire goal will be taken as completing two checkpoints.')
+          typingPrint('The total amount of coins you can get is double the amount you deposited.')
+          print()
+          typingPrint('You may have at most 3 concurrent goals, with each having a maximum of 25,000 coins deposit.')
+          typingPrint('If you want to end a goal early, you will be returned half of your deposit,')
+          typingPrint('or the amount of claimed coins, whichever is higher.')
+          input("\033[3mPress enter to continue ...\033[0m\n>>> ")
+        else:
+          print('A goal tracker is a way to set your goals (not necessarily in this game) and track your progress towards them.')
+          print()
+          print('You may deposit coins, and you can set the amount of checkpoints.')
+          print('You can have a minimum of 1 checkpoint, with the maximum of 4 checkpoints.')
+          print()
+          print('After completing the checkpoints, you may get a sum of coins.')
+          print('For every checkpoint you complete, you can claim a portion of the coins.')
+          print('Completing the entire goal will be taken as completing two checkpoints.')
+          print('The total amount of coins you can get is double the amount you deposited.')
+          print()
+          print('You may have at most 3 concurrent goals, with each having a maximum of 25,000 coins deposit.')
+          print('If you want to end a goal early, you will be returned half of your deposit,')
+          print('or the amount of claimed coins, whichever is higher.')
+          input("\033[3mPress enter to continue ...\033[0m\n>>> ")
+
 
       displayActiveGoal()
       
@@ -704,7 +748,7 @@ while status != -1:
       if option == '1':
         activeGoal = sum(1 for g in goal if g['end_date'] == "undefined")
         if not goal:
-          goalTrackerIntro()
+          goalTrackerIntro('allatonce')
         
         while True:
           if activeGoal >= 3:
@@ -937,15 +981,15 @@ while status != -1:
         break
       
   elif status == '4':
-    display(4)
-    print('[1] Coinflip')
-    print('[2] Tier Upgrading')
-    print('[3] Potions')
-    print('[4] Abilities')
-    print('[5] Bosses')
-    print('[0] Return')
-
     while True:
+      display(4)
+      print('[1] Coinflip')
+      print('[2] Tier Upgrading')
+      print('[3] Potions')
+      print('[4] Abilities')
+      print('[5] Bosses')
+      print('[6] Mercy Potion')
+      print('[0] Return')
       option = input(">>> ").strip()
       if option == '1':
         if profile.tier_accolade == 'None':
@@ -1030,7 +1074,7 @@ while status != -1:
           hpOriginal = profile.hp
           if ans == '1':
             if profile.coin < 5000:
-              print('You need at least 5,000 coins to use a Healing Potion.')
+              print('You need at least 5,000 coins to use a Healing Potion.\nGo to Shop > Mercy Potion for free healing.')
               input('\033[3mPress anything to continue... \033[0m')
               break
             profile.addCoin(-5000)
@@ -1053,182 +1097,188 @@ while status != -1:
         break
 
       elif option == '4':
-        abilities = [
-          {
-            "name": "Strengthened Strength",
-            "effect": "max_hp",
-            "description": "Increases HP capacity to n",
-            "tiers": [
-              {"value": 110, "cost": 15000, "required_tier": "Bronze"},
-              {"value": 115, "cost": 20000, "required_tier": "Silver"},
-              {"value": 120, "cost": 50000, "required_tier": "Gold"},
-              {"value": 130, "cost": 100000, "required_tier": "Platinum"},
-              {"value": 140, "cost": 250000, "required_tier": "Diamond"},
-              {"value": 150, "cost": 500000, "required_tier": "Amethyst"},
-              {"value": 175, "cost": 1000000, "required_tier": "Sapphire"},
-              {"value": 200, "cost": 2000000, "required_tier": "Emerald"}
+        while True:
+          abilities = [
+            {
+              "name": "Strengthened Strength",
+              "effect": "max_hp",
+              "description": "Increases HP capacity to n",
+              "tiers": [
+                {"value": 110, "cost": 15000, "required_tier": "Bronze"},
+                {"value": 115, "cost": 20000, "required_tier": "Silver"},
+                {"value": 120, "cost": 50000, "required_tier": "Golden"},
+                {"value": 130, "cost": 100000, "required_tier": "Platinum"},
+                {"value": 140, "cost": 250000, "required_tier": "Diamond"},
+                {"value": 150, "cost": 500000, "required_tier": "Amethyst"},
+                {"value": 175, "cost": 1000000, "required_tier": "Sapphire"},
+                {"value": 200, "cost": 2000000, "required_tier": "Emerald"}
+              ]
+            },
+            {
+              "name": "Critical Immunity",
+              "effect": "fatal_immunity",
+              "description": "n% to avoid fatal damage once",
+              "tiers": [
+                {"value": 50, "cost": 150000, "required_tier": "Platinum"},
+                {"value": 60, "cost": 300000, "required_tier": "Diamond"},
+                {"value": 65, "cost": 675000, "required_tier": "Amethyst"},
+                {"value": 75, "cost": 1200000, "required_tier": "Sapphire"},
+                {"value": 100, "cost": 2000000, "required_tier": "Emerald"}
+              ]
+            },
+            {
+              "name": "Reward Multiplier",
+              "effect": "reward_boost",
+              "description": "Increases coin reward by n%",
+              "tiers": [
+                {"value": 20, "cost": 20000, "required_tier": "Bronze"},
+                {"value": 35, "cost": 45000, "required_tier": "Silver"},
+                {"value": 50, "cost": 75000, "required_tier": "Golden"},
+                {"value": 75, "cost": 150000, "required_tier": "Platinum"},
+                {"value": 100, "cost": 300000, "required_tier": "Diamond"},
+                {"value": 125, "cost": 600000, "required_tier": "Amethyst"},
+                {"value": 150, "cost": 1150000, "required_tier": "Sapphire"},
+                {"value": 200, "cost": 2200000, "required_tier": "Emerald"}
+              ]
+            },
+            {
+              "name": "Streak Master",
+              "effect": "streak_bonus",
+              "description": "Adds (highest streak * n)% to coin reward",
+              "tiers": [
+                {"value": 1.5, "cost": 20000, "required_tier": "Bronze"},
+                {"value": 1.75, "cost": 45000, "required_tier": "Silver"},
+                {"value": 2, "cost": 75000, "required_tier": "Golden"},
+                {"value": 2.25, "cost": 150000, "required_tier": "Platinum"},
+                {"value": 2.5, "cost": 250000, "required_tier": "Diamond"},
+                {"value": 2.75, "cost": 500000, "required_tier": "Amethyst"},
+                {"value": 3, "cost": 1150000, "required_tier": "Sapphire"},
+                {"value": 3.25, "cost": 2200000, "required_tier": "Emerald"}
+              ]
+            },
+            {
+              "name": "Refreshing Hit",
+              "effect": "heal_on_correct",
+              "description": "Heals HP by n on correct answer",
+              "tiers": [
+                {"value": 5, "cost": 200000, "required_tier": "Platinum"},
+                {"value": 7, "cost": 320000, "required_tier": "Diamond"},
+                {"value": 10, "cost": 600000, "required_tier": "Amethyst"},
+                {"value": 13, "cost": 1150000, "required_tier": "Sapphire"},
+                {"value": 15, "cost": 2200000, "required_tier": "Emerald"}
+              ]
+            },
+            {
+              "name": "Glory of Victory",
+              "effect": "heal_on_win",
+              "description": "Heals HP by n when winning",
+              "tiers": [
+                {"value": 12, "cost": 20000, "required_tier": "Bronze"},
+                {"value": 15, "cost": 45000, "required_tier": "Silver"},
+                {"value": 19, "cost": 75000, "required_tier": "Golden"},
+                {"value": 25, "cost": 250000, "required_tier": "Platinum"},
+                {"value": 30, "cost": 320000, "required_tier": "Diamond"},
+                {"value": 36, "cost": 600000, "required_tier": "Amethyst"},
+                {"value": 43, "cost": 1150000, "required_tier": "Sapphire"},
+                {"value": 55, "cost": 2200000, "required_tier": "Emerald"}
+              ]
+            }
             ]
-          },
-          {
-            "name": "Critical Immunity",
-            "effect": "fatal_immunity",
-            "description": "n% to avoid fatal damage once",
-            "tiers": [
-              {"value": 50, "cost": 150000, "required_tier": "Platinum"},
-              {"value": 60, "cost": 300000, "required_tier": "Diamond"},
-              {"value": 65, "cost": 675000, "required_tier": "Amethyst"},
-              {"value": 75, "cost": 1200000, "required_tier": "Sapphire"},
-              {"value": 100, "cost": 2000000, "required_tier": "Emerald"}
-            ]
-          },
-          {
-            "name": "Reward Multiplier",
-            "effect": "reward_boost",
-            "description": "Increases coin reward by n%",
-            "tiers": [
-              {"value": 20, "cost": 20000, "required_tier": "Bronze"},
-              {"value": 35, "cost": 45000, "required_tier": "Silver"},
-              {"value": 50, "cost": 75000, "required_tier": "Gold"},
-              {"value": 75, "cost": 150000, "required_tier": "Platinum"},
-              {"value": 100, "cost": 300000, "required_tier": "Diamond"},
-              {"value": 125, "cost": 600000, "required_tier": "Amethyst"},
-              {"value": 150, "cost": 1150000, "required_tier": "Sapphire"},
-              {"value": 200, "cost": 2200000, "required_tier": "Emerald"}
-            ]
-          },
-          {
-            "name": "Streak Master",
-            "effect": "streak_bonus",
-            "description": "Adds (highest streak * n)% to coin reward",
-            "tiers": [
-              {"value": 1.5, "cost": 20000, "required_tier": "Bronze"},
-              {"value": 1.75, "cost": 45000, "required_tier": "Silver"},
-              {"value": 2, "cost": 75000, "required_tier": "Gold"},
-              {"value": 2.25, "cost": 150000, "required_tier": "Platinum"},
-              {"value": 2.5, "cost": 250000, "required_tier": "Diamond"},
-              {"value": 2.75, "cost": 500000, "required_tier": "Amethyst"},
-              {"value": 3, "cost": 1150000, "required_tier": "Sapphire"},
-              {"value": 3.25, "cost": 2200000, "required_tier": "Emerald"}
-            ]
-          },
-          {
-            "name": "Refreshing Hit",
-            "effect": "heal_on_correct",
-            "description": "Heals HP by n on correct answer",
-            "tiers": [
-              {"value": 5, "cost": 200000, "required_tier": "Platinum"},
-              {"value": 7, "cost": 320000, "required_tier": "Diamond"},
-              {"value": 10, "cost": 600000, "required_tier": "Amethyst"},
-              {"value": 13, "cost": 1150000, "required_tier": "Sapphire"},
-              {"value": 15, "cost": 2200000, "required_tier": "Emerald"}
-            ]
-          },
-          {
-            "name": "Glory of Victory",
-            "effect": "heal_on_win",
-            "description": "Heals HP by n when winning",
-            "tiers": [
-              {"value": 12, "cost": 20000, "required_tier": "Bronze"},
-              {"value": 15, "cost": 45000, "required_tier": "Silver"},
-              {"value": 19, "cost": 75000, "required_tier": "Gold"},
-              {"value": 25, "cost": 250000, "required_tier": "Platinum"},
-              {"value": 30, "cost": 320000, "required_tier": "Diamond"},
-              {"value": 36, "cost": 600000, "required_tier": "Amethyst"},
-              {"value": 43, "cost": 1150000, "required_tier": "Sapphire"},
-              {"value": 55, "cost": 2200000, "required_tier": "Emerald"}
-            ]
-          }
-          ]
-        
-        display(4)
-        print('\033[1mUPGRADING ABILITIES\033[0m')
-
-        tierList = ['None', 'Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond', 'Amethyst', 'Sapphire', 'Emerald']
-        player_tierID = tierList.index(profile.tier_accolade)
-
-        print(f"{'id':>3}  {'name':<22} {'description':<50} {'n':>7}  {'cost':>9}  {'tier':<10}")
-        print("-" * 115)
-
-        available_upgrades = []
-        ability_id = 1
-
-        for ability in abilities:
-          key = ability["effect"]
-          if key == "max_hp":
-            current_value = profile.max_hp
-          else:
-            current_value = profile.abilities[key]
           
-          next_tier = None
-          for tier in ability["tiers"]:
-            if tier["value"] > current_value:
-              next_tier = tier
-              break
+          display(4)
+          print('\033[1mUPGRADING ABILITIES\033[0m')
 
-          if not next_tier:
+          tierList = ['None', 'Bronze', 'Silver', 'Golden', 'Platinum', 'Diamond', 'Amethyst', 'Sapphire', 'Emerald']
+          player_tierID = tierList.index(profile.tier_accolade)
+
+          print(f"{'id':>3}  {'name':<22} {'description':<45} {'n':^11}  {'cost':>9}  {'tier':<10}")
+          print("-" * 115)
+
+          available_upgrades = []
+          ability_id = 1
+
+          for ability in abilities:
+            key = ability["effect"]
+            if key == "max_hp":
+              current_value = profile.max_hp
+            else:
+              current_value = profile.abilities[key]
+            
+            next_tier = None
+            for tier in ability["tiers"]:
+              if tier["value"] > current_value:
+                next_tier = tier
+                break
+
+            required_tierID = tierList.index(next_tier["required_tier"])
+            cost = next_tier["cost"]
+            new_value = next_tier["value"]
+            
+            if profile.coin >= cost:
+              price_col = "\033[32m"
+            else:
+              price_col = "\033[31m"
+              
+            if player_tierID < required_tierID:
+              lock_icon = "🔒"
+            else:
+              lock_icon = ""
+
+            available_upgrades.append({
+              "id": ability_id,
+              "name": ability["name"],
+              "description": ability["description"],
+              "current_value": current_value,
+              "new_value": new_value,
+              "cost": cost,
+              "lock_icon": lock_icon,
+              "key": key,
+              "required_tier": next_tier["required_tier"]
+            })
+
+            print(f"{ability_id:>3}  {ability['name']:<22} {ability['description']:<45} {current_value:>4} → {new_value:<4}  {price_col}{cost:>9}\033[0m  {next_tier['required_tier']:<10} {lock_icon}")
             ability_id += 1
-            continue
 
-          required_tierID = tierList.index(next_tier["required_tier"])
-          cost = next_tier["cost"]
-          new_value = next_tier["value"]
-          if profile.coin >= cost:
-            price_col = "\033[32m"
-          else:
-            price_col = "\033[31m"
-          if player_tierID < required_tierID:
-            lock_icon = "🔒"
-          else:
-            lock_icon = ""
-
-          available_upgrades.append({
-            "id": ability_id,
-            "name": ability["name"],
-            "description": ability["description"],
-            "current_value": current_value,
-            "new_value": new_value,
-            "cost": cost,
-            "lock_icon": lock_icon,
-            "key": key,
-            "required_tier": next_tier["required_tier"]
-          })
-
-          print(f"{ability_id:>3}  {ability['name']:<22} {ability['description']:<50} {current_value:>3} → {new_value:<3}  {price_col}{cost:>9}\033[0m  {next_tier['required_tier']:<10} {lock_icon}")
-          ability_id += 1
-        
-        choice = input("\nEnter ability ID to upgrade (or 0 to return):\n>>> ").strip()
-        if not choice.isdigit():
-          print("Invalid ability ID")
-          input("\033[3mPress anything to continue... \033[0m")
-          break
-
-        selected_id = int(choice)
-        if selected_id == 0:
-          break
-
-        selected = None
-        for upgrade in available_upgrades:
-          if upgrade["id"] == selected_id:
-            selected = upgrade
+          if not available_upgrades:
+            print("\nAll abilities are maxed out!")
+            input("\033[3mPress anything to continue... \033[0m")
             break
 
-        if not selected:
-          print("Ability already maxed out or unavailable.")
+          try:
+            choice = input("\nEnter ability ID to upgrade (or 0 to return):\n>>> ").strip()
+            selected_id = int(choice)
+          except ValueError:
+            print("Invalid ability ID")
+            input("\033[3mPress anything to continue... \033[0m") 
+            break
+
+          if selected_id == 0:
+            break
+
+          selected = None
+          for upgrade in available_upgrades:
+            if upgrade["id"] == selected_id:
+              selected = upgrade
+              break
+
+          if not selected:
+            print("Invalid ability ID")
+            input("\033[3mPress anything to continue... \033[0m")
+            break
+
+          required_tierID = tierList.index(selected["required_tier"])
+
+          if player_tierID < required_tierID:
+            print(f"You need the {selected['required_tier']} tier to upgrade this ability.")
+          elif profile.coin < selected["cost"]:
+            print("Not enough coins.")
+          else:
+            profile.addCoin(-selected["cost"])
+            profile.upgrade_ability(selected["key"], selected["new_value"])
+            profile.save()
+            print(f"\nYou upgraded \033[1m{selected['name']}\033[0m to {selected['new_value']}!")
+
           input("\033[3mPress anything to continue... \033[0m")
-          break
-
-        required_tierID = tierList.index(selected["required_tier"])
-
-        if player_tierID < required_tierID:
-          print(f"You need the {selected['required_tier']} tier to upgrade this ability.")
-        elif profile.coin < selected["cost"]:
-          print("Not enough coins.")
-        else:
-          profile.addCoin(-selected["cost"])
-          profile.upgrade_ability(selected["key"], selected["new_value"])
-          print(f"\nYou upgraded \033[1m{selected['name']}\033[0m to {selected['new_value']}!")
-        input("\033[3mPress anything to continue... \033[0m")
-        break
 
       elif option == '5':
         display(4)
@@ -1298,6 +1348,19 @@ while status != -1:
           profile.save()
         input("\033[3mPress anything to continue... \033[0m")
         break
+
+      elif option == '6':
+        if profile.coin >= 5000 or profile.hp >= 1:
+          print('You do not need to use a Mercy Potion right now.')
+          input('\033[3mPress anything to continue... \033[0m')
+          break
+        else:
+          hpOriginal = profile.hp
+          profile.hp += 20
+          print(f'You have \033[32mhealed\033[0m \033[1m{profile.hp - hpOriginal}\033[0m HP and you now have \033[1m{profile.hp}\033[0m HP.')
+          profile.save()
+          input("\033[3mPress anything to continue... \033[0m")
+          break
 
       elif option == '0':
         break
