@@ -143,7 +143,7 @@ def display(mode=0):
     hoursT = int(profile.today_learning_time // 3600)
     minutesT = int((profile.today_learning_time % 3600) // 60)
     secondsT = int(profile.today_learning_time % 60)
-    print(f'🕒 Time elapsed: {elapsed_time("d")} ({elapsedTimeColor}{hoursT:02}h {minutesT:02}m {secondsT:02}s\033[0m for this session)')
+    print(f'🕒 Time elapsed: {elapsed_time("d")} for this session ({elapsedTimeColor}{hoursT:02}h {minutesT:02}m {secondsT:02}s\033[0m today)')
     print(f'💰 Coins:        \033[1m{profile.coin}\033[0m')
     print(f'❤️   HP:          {hp_bar()}')
 

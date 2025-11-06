@@ -14,8 +14,8 @@ Required extensions: Python, Pylance
 - The version number display has been corrected.  
 - For clarity, on the profile interface, 'Streak' has been changed to 'Daily Streak' to avoid confusion with the game streak.  
 - For clarity, it is mentioned that a goal in goal tracker does not necessarily have to be in this game in the introduction of the function.  
+- For clarity, it is mentioned the time elapsed is 'for this session' or 'for today' in the main menu.  
 - The number of initial attempts for the demo quiz: Basic Arithmetic Operation changed to 0 instead of 1.  
-- Patched the incorrect display of ‘time elapsed in this session’ as ‘time elapsed for today’ in the main menu.  
 - Patched the issue when a quiz is played for the first time, ‘user_choice’ was not initialised and if the user died in playing that quiz, a key error will be raised.  
 - Patched the issue when user died in the middle of a quiz, the remaining questions' user choice was incorrectly inherited from previous attempts.  
 - Patched the unexpected behaviors in upgrading abilities.  
