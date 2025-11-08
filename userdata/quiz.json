@@ -11,7 +11,7 @@
           "3"
         ],
         "answer": 0,
-        "user_choice": 0
+        "user_choice": -1
       },
       {
         "question": "5 x 7",
@@ -20,7 +20,7 @@
           "45"
         ],
         "answer": 0,
-        "user_choice": 0
+        "user_choice": -1
       },
       {
         "question": "8 x 9 + 6",
@@ -30,7 +30,7 @@
           "64"
         ],
         "answer": 0,
-        "user_choice": 0
+        "user_choice": -1
       },
       {
         "question": "24 + 35",
@@ -40,7 +40,7 @@
           "49"
         ],
         "answer": 0,
-        "user_choice": 0
+        "user_choice": -1
       },
       {
         "question": "23 x 10 + 1",
@@ -50,13 +50,203 @@
           "241"
         ],
         "answer": 1,
-        "user_choice": 1
+        "user_choice": -1
       }
     ],
     "archived": false,
     "created_by": "Default Quiz Set",
     "created_at": "2025-10-23",
     "last_reviewed": "2025-10-23",
+    "attempts": 0
+  },
+  {
+    "id": 2,
+    "name": "Questions with Lowest Accuracy 2021",
+    "category": "HKDSE ICT",
+    "questions": [
+      {
+        "question": "Which of the following additions of numbers in 8-bit two's complement representation will result in an overflow error? [42%]",
+        "options": [
+          "0011 0110 + 0011 1100",
+          "0100 0010 + 1000 0001",
+          "1001 1100 + 1111 0110",
+          "1011 1010 + 1100 0100"
+        ],
+        "answer": 3,
+        "user_choice": -1
+      },
+      {
+        "question": "The ASCII codes for the characters 'X' and 'Z' in hexadecimal are [?] and 5A respectively. [51%]",
+        "options": [
+          "3A",
+          "3C",
+          "58",
+          "59"
+        ],
+        "answer": 2,
+        "user_choice": -1
+      },
+      {
+        "question": "Which of the following can be the specifications of a scanner for scanning documents and photos? [36%]\n(1) 802.11n supported\n(2) 24-bit color depth\n(3) Built-in 64MB RAM",
+        "options": [
+          "1, 2 only",
+          "1, 3 only",
+          "2, 3 only",
+          "1, 2 and 3"
+        ],
+        "answer": 3,
+        "user_choice": -1
+      },
+      {
+        "question": "Mary can use her mobile phone in her office to control the appliances connecting to a WiFi network at home. Which of the following are involved? [35%]\n(1) LAN\n(2) Internet\n(3) Access Point",
+        "options": [
+          "1, 2 only",
+          "1, 3 only",
+          "2, 3 only",
+          "1, 2 and 3"
+        ],
+        "answer": 3,
+        "user_choice": -1
+      },
+      {
+        "question": "After writing the source code of a program, which of the following should be done according to the problem-solving procedures? [48%]\n(1) Outline the input and output requirements of the problem.\n(2) Test the program with boundary cases.\n(3) Define the scope of the problem.",
+        "options": [
+          "1 only",
+          "2 only",
+          "1, 3 only",
+          "2, 3 only"
+        ],
+        "answer": 1,
+        "user_choice": -1
+      }
+    ],
+    "archived": false,
+    "created_by": "Default Quiz Set",
+    "created_at": "2025-11-08",
+    "last_reviewed": "2025-11-08",
+    "attempts": 0
+  },
+  {
+    "id": 3,
+    "name": "Questions with Lowest Accuracy 2022",
+    "category": "HKDSE ICT",
+    "questions": [
+      {
+        "question": "A computer receives the three data sequences, shown below.\nEach sequence includes a parity bit.\nTwo of the sequences are found to be corrupted during transmission.\nFirst:\t0101 0111\nSecond:\t1101 0101\nThird:\t1110 1011\nWhich of the following best describes the situation? [39%]\n[Corrupted data sequence , Parity check]",
+        "options": [
+          "The first and second, even",
+          "The second and third, even",
+          "The first and second, odd",
+          "The second and third, odd"
+        ],
+        "answer": 0,
+        "user_choice": -1
+      },
+      {
+        "question": "What are the advantages of using the following calendar box over a text box for entering a date?\n(1) Avoids impossible dates.\n(2) Ensures that the input is error-free.\n(3) Provides a user-friendly interface. [39%]",
+        "options": [
+          "1 and 2 only",
+          "2 and 3 only",
+          "1 and 3 only",
+          "1, 2 and 3"
+        ],
+        "answer": 1,
+        "user_choice": -1
+      },
+      {
+        "question": "How many bits are required to represent an image of 8×8 black-and-white pixels? [39%]",
+        "options": [
+          "6^4",
+          "64^2",
+          "8^8",
+          "2^64"
+        ],
+        "answer": 0,
+        "user_choice": -1
+      },
+      {
+        "question": "Why should characters be represented by character sets such as ASCII in computers?\n(1) To standardise the data representation\n(2) To enhance the data encryption\n(3) As data in computers is stored in binary numbers [25%]",
+        "options": [
+          "1 only",
+          "2 only",
+          "1, 3 only",
+          "2, 3 only"
+        ],
+        "answer": 0,
+        "user_choice": -1
+      },
+      {
+        "question": "There are one hundred 300GB surveillance video files.\nWithout any file reorganisation and compression, how many 2TB hard disks are needed to store all the video files? [7%]",
+        "options": [
+          "15",
+          "16",
+          "17",
+          "32"
+        ],
+        "answer": 2,
+        "user_choice": -1
+      }
+    ],
+    "archived": false,
+    "created_by": "Default Quiz Set",
+    "created_at": "2025-11-08",
+    "last_reviewed": "2025-11-08",
+    "attempts": 0
+  },
+  {
+    "id": 4,
+    "name": "Questions with Lowest Accuracy 2023",
+    "category": "HKDSE ICT",
+    "questions": [
+      {
+        "question": "Mary only has a computer without any network connections.\nWhich of the following systems can she carry out? [37%]\n(1) Distributed processing system\n(2) Real-time system\n(3) Batch processing system",
+        "options": [
+          "1 only",
+          "2 only",
+          "1 and 3 only",
+          "2 and 3 only"
+        ],
+        "answer": 3,
+        "user_choice": -1
+      },
+      {
+        "question": "In which of the following 8-bit representations will the addition of integers 01100000 and 01100000 result in an overflow error? [32%]\n(1) Sign-and-magnitude\n(2) One's complement\n(3) Two's complement",
+        "options": [
+          "1, 2 only",
+          "1, 3 only",
+          "2, 3 only",
+          "1, 2, 3"
+        ],
+        "answer": 3,
+        "user_choice": -1
+      },
+      {
+        "question": "What is the output of the following algorithm? [38%]\nA ← 5\nB ← 11\nC ← 7\nFOR C FROM 2 TO 3 DO\n\tB ← A + B\nOUTPUT (A + B)",
+        "options": [
+          "16",
+          "21",
+          "26",
+          "32"
+        ],
+        "answer": 2,
+        "user_choice": -1
+      },
+      {
+        "question": "What is the output of the following algorithm for the input 'Y', 'N', 'Y', 'N', 'Y'? [38%]\nS ← 0\nFOR i FROM 1 TO 5 DO\n\tINPUT CH\n\tIF CH = 'Y' THEN\n\t\tS ← S+1\n\tELSE\n\t\tOUTPUT '#'\nOUTPUT S",
+        "options": [
+          "1#2#3",
+          "1#1#1",
+          "##3",
+          "###"
+        ],
+        "answer": 2,
+        "user_choice": -1
+      }
+    ],
+    "archived": false,
+    "created_by": "Default Quiz Set",
+    "created_at": "2025-11-08",
+    "last_reviewed": "2025-11-08",
     "attempts": 0
   }
 ]

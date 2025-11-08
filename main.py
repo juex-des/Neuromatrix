@@ -131,7 +131,7 @@ def display(mode=0):
   elif os.name == 'posix':
     os.system('clear')
 
-  print('\033[1;36m  NEUROMATRIX    \033[90mv1.1.0\033[0m')
+  print('\033[1;36m  NEUROMATRIX    \033[90mv1.1.1\033[0m')
   if mode == 0:
     if profile.today_learning_time < 3600:
       elapsedTimeColor = "\033[1;33m"
@@ -210,8 +210,8 @@ if time.strftime("%Y-%m-%d") != profile.last_login:
 
   profile.last_login = time.strftime("%Y-%m-%d")
   profile.save()
-  print("\033[3mEnter full mode for better experience by clicking \033[1m'Maximize Panel Size' \033[0m")
-  input("\n\033[3mPress anything to continue... \033[0m")
+  print("\n\033[3mEnter full mode for better experience by clicking \033[1m'Maximize Panel Size' \033[0m")
+  input("\033[3mPress anything to continue... \033[0m")
 
 while status != -1:
   display()
@@ -399,6 +399,7 @@ while status != -1:
           display()
           print(f"\033[1mQuestion {i+1}/{total_questions}\033[0m")
           print(q["question"])
+          print()
           for option_id in range(len(q["options"])):
             print(f"[{option_id+1}] {q['options'][option_id]}")
 

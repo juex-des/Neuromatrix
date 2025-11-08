@@ -30,7 +30,15 @@ Required extensions: Python, Pylance
 - A reminder for user that they could go to Shop > Potion to buy a potion when they're out of HP to play a quiz has been added.  
 - The formula for reward in quiz is changed to [original reward * (1 / (attempts+1))] to prevent farming of coins.  
 - When the user is out of both HP and coins, they could buy a mercy potion (Shop > Mercy Potion) so that they can continue to play quizzes.  
-- It would now return to the upgrade ability menu instead of main menu, in the case that the user wants to unlock or upgrade abilities several times after unlocking or upgrading an ability.  
+- It would now return to the upgrade ability menu instead of main menu, in the case that the user wants to unlock or upgrade abilities several times after unlocking or upgrading an ability.   
+
+## [1.1.1] - 2025-11-08
+### Patches
+- Updated fileHandler.py in order to fix the encoding system to avoid error.  
+
+### Improvement
+- Added more default quizzes.  
+- An extra line is printed after every question before showing options.  
 
 ## [Coming Soon]
-- A built-in function for the user to add a quiz with Artificial Intelligence may be added.   
+- A built-in function for the user to add a quiz with Artificial Intelligence may be added.  
