@@ -143,7 +143,7 @@ def display(mode=0):
     hoursT = int(profile.today_learning_time // 3600)
     minutesT = int((profile.today_learning_time % 3600) // 60)
     secondsT = int(profile.today_learning_time % 60)
-    print(f'🕒 Time elapsed: {elapsed_time("d")} for this session ({elapsedTimeColor}{hoursT:02}h {minutesT:02}m {secondsT:02}s\033[0m today)')
+    print(f'🕒 Time elapsed: {elapsed_time("d")} (this session) / {elapsedTimeColor}{hoursT:02}h {minutesT:02}m {secondsT:02}s\033[0m (today)')
     print(f'💰 Coins:        \033[1m{profile.coin}\033[0m')
     print(f'❤️   HP:          {hp_bar()}')
 
@@ -287,7 +287,7 @@ while status != -1:
           category = q['category']
           num_q = len(q['questions'])
           attempts = q['attempts']
-          last_rev = q['last_reviewed'] or 'Never'
+          last_rev = q['last_reviewed'] or 'never'
 
           # Trunc long fields
           if len(name) <= name_width:
@@ -621,7 +621,7 @@ while status != -1:
             category = q['category']
             num_q = len(q['questions'])
             attempts = q['attempts']
-            last_rev = q['last_reviewed'] or 'Never'
+            last_rev = q['last_reviewed'] or 'never'
 
             # Trunc long fields
             if len(name) <= name_width:

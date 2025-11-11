@@ -15,6 +15,7 @@ Required extensions: Python, Pylance
 ### Improvement
 - Added more default quizzes.  
 - An extra line is printed after every question before showing options.  
+- Improved display for elapsed time.  
 
 ## [Coming Soon]
 - A built-in function for the user to add a quiz with Artificial Intelligence may be added.  
