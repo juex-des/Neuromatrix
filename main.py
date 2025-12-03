@@ -131,7 +131,7 @@ def display(mode=0):
   elif os.name == 'posix':
     os.system('clear')
 
-  print('\033[1;36m  NEUROMATRIX    \033[90mv1.1.1\033[0m')
+  print('\033[1;36m  NEUROMATRIX    \033[90mv1.1.2\033[0m')
   if mode == 0:
     if profile.today_learning_time < 3600:
       elapsedTimeColor = "\033[1;33m"
@@ -1011,8 +1011,12 @@ while status != -1:
         if profile.last_coinflip == 'undefined':
           print('Coinflip is a game which you choose heads or tails, and have a 45% chance of doubling your bet')
 
-        bet = int(input('Please enter your bet (5,000 - 25,000 coins): '))
-        input('Choose HEADS or TAILS\n>>> ')
+        try:
+          bet = int(input('Please enter your bet (5,000 - 25,000 coins): '))
+        except:
+          print('Invalid input. Please try again.')
+          input('\033[3mPress anything to continue... \033[0m')
+          break
 
         if bet < 5000 or bet > 25000:
           print('Invalid bet amount. Please try again.')
@@ -1022,6 +1026,8 @@ while status != -1:
           print('You cannot bet more than what you have.')
           input('\033[3mPress anything to continue... \033[0m')
           break
+        
+        input('Choose HEADS or TAILS\n>>> ')
 
         if random.random() <= 0.45:
           profile.addCoin(bet)
@@ -1211,34 +1217,35 @@ while status != -1:
                 next_tier = tier
                 break
 
-            required_tierID = tierList.index(next_tier["required_tier"])
-            cost = next_tier["cost"]
-            new_value = next_tier["value"]
+            if next_tier is not None:
+              required_tierID = tierList.index(next_tier["required_tier"])
+              cost = next_tier["cost"]
+              new_value = next_tier["value"]
             
-            if profile.coin >= cost:
-              price_col = "\033[32m"
-            else:
-              price_col = "\033[31m"
-              
-            if player_tierID < required_tierID:
-              lock_icon = "🔒"
-            else:
-              lock_icon = ""
+              if profile.coin >= cost:
+                price_col = "\033[32m"
+              else:
+                price_col = "\033[31m"
+                
+              if player_tierID < required_tierID:
+                lock_icon = "🔒"
+              else:
+                lock_icon = ""
 
-            available_upgrades.append({
-              "id": ability_id,
-              "name": ability["name"],
-              "description": ability["description"],
-              "current_value": current_value,
-              "new_value": new_value,
-              "cost": cost,
-              "lock_icon": lock_icon,
-              "key": key,
-              "required_tier": next_tier["required_tier"]
-            })
+              available_upgrades.append({
+                "id": ability_id,
+                "name": ability["name"],
+                "description": ability["description"],
+                "current_value": current_value,
+                "new_value": new_value,
+                "cost": cost,
+                "lock_icon": lock_icon,
+                "key": key,
+                "required_tier": next_tier["required_tier"]
+              })
 
-            print(f"{ability_id:>3}  {ability['name']:<22} {ability['description']:<45} {current_value:>4} → {new_value:<4}  {price_col}{cost:>9}\033[0m  {next_tier['required_tier']:<10} {lock_icon}")
-            ability_id += 1
+              print(f"{ability_id:>3}  {ability['name']:<22} {ability['description']:<45} {current_value:>4} → {new_value:<4}  {price_col}{cost:>9}\033[0m  {next_tier['required_tier']:<10} {lock_icon}")
+              ability_id += 1
 
           if not available_upgrades:
             print("\nAll abilities are maxed out!")
