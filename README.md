@@ -14,5 +14,14 @@ Required extensions: Python, Pylance
 - Patched the issue that the failure message is only shown after entering heads/tails in the case that user enters an amount below/exceed the range of acceptable bet.
 - Patched the issue when the user upgraded one of the abilities to the maximum, the ‘next tier’ field may not be defined properly.
 
+## [1.1.3] - 2025-12-05
+### Patches
+- Patched the issue that the name field when creating a goal could be empty.
+
+### Improvements
+- As a followup of UAT, new users are now given 25,000 coins upon registration for them to start with.
+- The coins owned can be shown when creating a goal in the goal tracker as a reference to decide the deposit amount.
+- In cases of typo, after inputting every question, a confirmation is added. If not confirmed, the user may edit the question/options/answer.
+
 ## [Coming Soon]
 - A built-in function for the user to add a quiz with Artificial Intelligence may be added.  

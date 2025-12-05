@@ -131,7 +131,7 @@ def display(mode=0):
   elif os.name == 'posix':
     os.system('clear')
 
-  print('\033[1;36m  NEUROMATRIX    \033[90mv1.1.2\033[0m')
+  print('\033[1;36m  NEUROMATRIX    \033[90mv1.1.3\033[0m')
   if mode == 0:
     if profile.today_learning_time < 3600:
       elapsedTimeColor = "\033[1;33m"
@@ -153,6 +153,7 @@ def display(mode=0):
   
   elif mode == 3:
     print('\033[1m  GOAL TRACKER \033[0m')
+    print(f'💰 Coins: \033[1m{profile.coin}\033[0m')
 
   elif mode == 4:
     print('\033[1m  SHOP \033[0m')
@@ -169,12 +170,13 @@ def display(mode=0):
 if profile.username == 'undefined':
   os.system('cls')
   profile.date_registered = time.strftime("%Y-%m-%d")
+  profile.addCoin(25000)
 
   typingPrint('Welcome to the world of Neuromatrix!')
   while profile.username == 'undefined':
     profile.username = input("What do you wish to be identified as?\n>>> ").strip()
   profile.save()
-  typingPrint(f'Congrats {profile.username}! You\'ve now set up your profile.')
+  typingPrint(f'Congrats {profile.username}!\nYou\'ve now set up your profile and received 25,000 coins as a welcome gift!')
   typingPrint('You can now wander around to discover the world of Neuromatrix.')
   typingPrint('When you see a menu like this ...')
   print('[1] Profile\n[2] Quiz\n[3] Goal Tracker\n[4] Shop\n[5] Settings\n[0] Exit')
@@ -504,13 +506,15 @@ while status != -1:
             print("Please enter a valid number.")
 
         questions = []
-        for i in range(1, num_q + 1):
+        q_id = 1
+        while q_id <= num_q:
           display()
-          print(f"\033[1mQuestion {i}/{num_q}\033[0m")
+          print(f"\033[1mQuestion {q_id}/{num_q}\033[0m")
           q_text = input("Enter question:\n>>> ").strip()
           if not q_text:
             print("Question cannot be empty.")
-            break
+            input("\033[3mPress anything to continue...\033[0m")
+            continue
 
           while True:
             try:
@@ -534,11 +538,25 @@ while status != -1:
               break
             print("Invalid choice.")
 
-          questions.append({
-            "question": q_text,
-            "options": options,
-            "answer": answer_index
-          })
+          # Confirmation
+          print("\nPlease confirm the question you've entered:")
+          print(f"Question: {q_text}")
+          for j in range(len(options)):
+            print(f"[{j+1}] {options[j]}")
+          print(f"Correct option: [{answer_index+1}] {options[answer_index]}")
+          
+          confirm = input("Is this correct? (y/n) >>> ").strip().lower()
+          if confirm == 'y':
+            questions.append({
+              "question": q_text,
+              "options": options,
+              "answer": answer_index
+            })
+            q_id += 1
+          else:
+            print("Please reenter the question.")
+            time.sleep(1)
+            continue
 
         new_quiz = {
           "id": len(quiz) + 1,
@@ -735,7 +753,6 @@ while status != -1:
           print('or the amount of claimed coins, whichever is higher.')
           input("\033[3mPress enter to continue ...\033[0m\n>>> ")
 
-
       displayActiveGoal()
       
       print('[1] \033[1mCREATE\033[0m a new goal')
@@ -749,7 +766,7 @@ while status != -1:
       if option == '1':
         activeGoal = sum(1 for g in goal if g['end_date'] == "undefined")
         if not goal:
-          goalTrackerIntro('allatonce')
+          goalTrackerIntro()
         
         while True:
           if activeGoal >= 3:
@@ -763,6 +780,12 @@ while status != -1:
           try:
             print('\033[1m< CREATING A NEW GOAL >\033[0m')
             name = input("Enter the \033[1mname\033[0m of your goal\n>>> ").strip()
+            
+            if len(name) == 0:
+              print("Goal name cannot be empty.")
+              input("\033[3mPress anything to continue...\033[0m")
+              break
+
             print("\nEnter the \033[1mdescription\033[0m of your goal.\nFor instance, what each of your checkpoints represents.")
             description = input(">>> ").strip()
             start_date = time.strftime("%Y-%m-%d")
